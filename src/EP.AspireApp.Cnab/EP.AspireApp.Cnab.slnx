@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="EP.AspireApp.Cnab.AppHost/EP.AspireApp.Cnab.AppHost.csproj" />
+  <Project Path="EP.AspireApp.Cnab.ServiceDefaults/EP.AspireApp.Cnab.ServiceDefaults.csproj" />
+</Solution>
