@@ -1,4 +1,8 @@
 <Solution>
-  <Project Path="EP.AspireApp.Cnab.AppHost/EP.AspireApp.Cnab.AppHost.csproj" />
-  <Project Path="EP.AspireApp.Cnab.ServiceDefaults/EP.AspireApp.Cnab.ServiceDefaults.csproj" />
+  <Folder Name="/src/">
+    <Project Path="../EP.AspireApp.Cnab.ApiService/EP.AspireApp.Cnab.ApiService.csproj" Id="4086a523-b605-4e47-a0dc-b3835e87eec4" />
+    <Project Path="../EP.AspireApp.Cnab.Web/EP.AspireApp.Cnab.Web.csproj" />
+    <Project Path="EP.AspireApp.Cnab.AppHost/EP.AspireApp.Cnab.AppHost.csproj" />
+    <Project Path="EP.AspireApp.Cnab.ServiceDefaults/EP.AspireApp.Cnab.ServiceDefaults.csproj" />
+  </Folder>
 </Solution>

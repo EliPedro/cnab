@@ -1,26 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Sdk Name="Aspire.AppHost.Sdk" Version="9.5.0" />
+	<Sdk Name="Aspire.AppHost.Sdk" Version="9.5.0" />
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UserSecretsId>ec5dbb79-3157-4259-9acb-a42d9e2a22a9</UserSecretsId>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\NewFolder\" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UserSecretsId>ec5dbb79-3157-4259-9acb-a42d9e2a22a9</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\EP.AspireApp.Cnab.ApiService\EP.AspireApp.Cnab.ApiService.csproj" />
+	  <ProjectReference Include="..\..\EP.AspireApp.Cnab.Web\EP.AspireApp.Cnab.Web.csproj" />
+	</ItemGroup>
 
 </Project>
