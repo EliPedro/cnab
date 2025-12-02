@@ -1,0 +1,92 @@
+﻿@page "/upload"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Forms
+@inject IJSRuntime JS
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<h3>Import CNAB File</h3>
+
+<input type="file" @ref="fileInput" accept=".txt,text/plain" />
+<button class="btn btn-primary" @onclick="UploadAsync" disabled="@isUploading">Import</button>
+
+@if (isUploading)
+{
+    <p><em>Importing...</em></p>
+}
+
+@if (resultMessage is not null)
+{
+    <div class="alert alert-info mt-3">@resultMessage</div>
+}
+
+@code {
+    private ElementReference fileInput;
+    private bool isUploading;
+    private string? resultMessage;
+
+    private async Task UploadAsync()
+    {
+        resultMessage = null;
+
+        try
+        {
+            isUploading = true;
+
+            string? token = null;
+            var httpContext = HttpContextAccessor.HttpContext;
+            if (httpContext is not null)
+            {
+                var tokens = Antiforgery.GetAndStoreTokens(httpContext);
+                token = tokens.RequestToken;
+            }
+            var result = await JS.InvokeAsync<UploadResult>("cnabUpload.uploadFile", fileInput, "api/cnab/upload", token);
+
+            if (!result.Success)
+            {
+                resultMessage = $"Failed: {result.Status} - {result.Body}";
+                return;
+            }
+
+            if (result.Summary is not null)
+            {
+                resultMessage = $"Lines: {result.Summary.TotalLines}, Imported: {result.Summary.ImportedTransactions}, New Stores: {result.Summary.NewStores}, ParseErrors: {result.Summary.ParseErrors}";
+            }
+            else
+            {
+                resultMessage = "Import completed (no summary returned).";
+            }
+        }
+        catch (JSException jsex)
+        {
+            resultMessage = $"Upload failed: {jsex.Message}";
+        }
+        catch (Exception ex)
+        {
+            resultMessage = $"Unexpected error: {ex.Message}";
+        }
+        finally
+        {
+            isUploading = false;
+        }
+    }
+
+    private sealed class UploadResult
+    {
+        public bool Success { get; set; }
+        public int Status { get; set; }
+        public string? Body { get; set; }
+        public ImportSummary? Summary { get; set; }
+    }
+
+    private sealed class ImportSummary
+    {
+        public int TotalLines { get; set; }
+        public int ImportedTransactions { get; set; }
+        public int NewStores { get; set; }
+        public int ParseErrors { get; set; }
+    }
+}
+
+<script src="_framework/blazor.server.js"></script>
+<script src="/js/fileUpload.js"></script>

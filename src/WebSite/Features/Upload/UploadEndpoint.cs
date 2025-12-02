@@ -1,5 +1,5 @@
 ﻿using Carter;
-using MediatR;
+using WebSite.Shared;
 
 namespace WebSite.Features.Upload;
 
@@ -7,7 +7,7 @@ public class UploadEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/cnab/upload", async (IFormFile? request, ISender sender) =>
+        app.MapPost("api/cnab/upload", async (IFormFile? request, ICommandHandler<UploadCommand> sender) =>
         {
             if (request is null || request.Length == 0)
             {
@@ -21,7 +21,7 @@ public class UploadEndpoint : ICarterModule
             {
                 var parser = new ParseUploadedFile(line);
                 var command = parser.Parse();
-                var result = await sender.Send(command);
+                var result = await sender.Handle(command);
             }
 
             return Results.Created();

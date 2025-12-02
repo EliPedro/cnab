@@ -16,7 +16,7 @@ public readonly struct ParseUploadedFile(string line)
         string card = line.Substring(30, 12).Trim();
         string timeString = line.Substring(42, 6);
         string storeOwner = line.Substring(48, 14).Trim();
-        string storeName = line.Substring(62, 19).Trim();
+        string storeName = line.Substring(62, 18).Trim();
 
         var date = DateTime.ParseExact(dateString, "yyyyMMdd", CultureInfo.InvariantCulture);
         var time = DateTime.ParseExact(timeString, "HHmmss", CultureInfo.InvariantCulture);

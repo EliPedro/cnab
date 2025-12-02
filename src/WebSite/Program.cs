@@ -1,9 +1,12 @@
 using Carter;
-using WebSite.Database;
-using WebSite.Extensions;
 using FluentValidation;
+using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using WebSite.Components;
+using WebSite.Database;
+using WebSite.Extensions;
+using WebSite.Features.Upload;
+using WebSite.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -12,6 +15,25 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddHttpContextAccessor();
+
+
+// register HttpClient for Blazor Server components (so components can inject HttpClient and call relative URLs)
+builder.Services.AddScoped(sp =>
+{
+    var nav = sp.GetRequiredService<NavigationManager>();
+    var env = sp.GetRequiredService<IWebHostEnvironment>();
+
+    var baseUri = new Uri(nav.BaseUri);
+    if (env.IsDevelopment())
+    {
+        var authority = baseUri.GetLeftPart(UriPartial.Authority).Replace("https:", "http:");
+        baseUri = new Uri(authority + "/");
+    }
+
+    var client = new HttpClient { BaseAddress = baseUri };
+    return client;
+});
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(o =>
@@ -19,12 +41,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
 
 var assembly = typeof(Program).Assembly;
 
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
-
+builder.Services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
+builder.Services.AddScoped<ICommandHandler<UploadCommand>, UploadHandler>();
 builder.Services.AddCarter();
-
-builder.Services.AddValidatorsFromAssembly(assembly);
-
 
 // enable API controllers for the import endpoint
 builder.Services.AddControllers();

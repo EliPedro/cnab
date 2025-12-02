@@ -29,6 +29,7 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
             entity.HasOne(e => e.Store)
             .WithMany(e => e.Transactions)
             .HasForeignKey(e => e.StoreId);
+            entity.Property(e => e.Amount).HasPrecision(18, 2);
         });
     }
 }

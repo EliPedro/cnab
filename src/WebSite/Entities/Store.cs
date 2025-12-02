@@ -10,9 +10,8 @@ public class Store
 
     private Store() { }
 
-    public Store(int id, string name, string owner)
+    public Store(string name, string owner)
     {
-        Id = id;
         Name = name;
         Owner = owner;
     }

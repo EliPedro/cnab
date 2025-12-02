@@ -1,10 +1,9 @@
-﻿using WebSite.Shared;
-using WebSite.ValueObject;
-using MediatR;
+﻿using WebSite.ValueObject;
+
 
 namespace WebSite.Features.Upload;
 
-public class UploadCommand : IRequest<Result<Guid>>
+public class UploadCommand 
 {
     public int TypeCode { get; set; }
     public DateTime Date { get; set; }
