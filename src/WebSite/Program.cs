@@ -5,11 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using WebSite.Components;
 using WebSite.Database;
 using WebSite.Extensions;
+using WebSite.Features.Store;
 using WebSite.Features.Upload;
 using WebSite.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -43,6 +45,9 @@ var assembly = typeof(Program).Assembly;
 
 builder.Services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
 builder.Services.AddScoped<ICommandHandler<UploadCommand>, UploadHandler>();
+builder.Services.AddScoped<IQueryCommandWithoudParams<StoreResponse>, StoreQuery>();
+
+
 builder.Services.AddCarter();
 
 // enable API controllers for the import endpoint
@@ -53,6 +58,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
+
 }
 else
 {

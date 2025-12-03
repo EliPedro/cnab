@@ -18,7 +18,7 @@ namespace WebSite.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Owner = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Owner = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,7 +26,7 @@ namespace WebSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transaction",
+                name: "TransactionStore",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -40,9 +40,9 @@ namespace WebSite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transaction", x => x.Id);
+                    table.PrimaryKey("PK_TransactionStore", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transaction_Store_StoreId",
+                        name: "FK_TransactionStore_Store_StoreId",
                         column: x => x.StoreId,
                         principalTable: "Store",
                         principalColumn: "Id",
@@ -50,14 +50,13 @@ namespace WebSite.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Store_Name_Owner",
+                name: "IX_Store_Name",
                 table: "Store",
-                columns: new[] { "Name", "Owner" },
-                unique: true);
+                column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transaction_StoreId",
-                table: "Transaction",
+                name: "IX_TransactionStore_StoreId",
+                table: "TransactionStore",
                 column: "StoreId");
         }
 
@@ -65,7 +64,7 @@ namespace WebSite.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Transaction");
+                name: "TransactionStore");
 
             migrationBuilder.DropTable(
                 name: "Store");

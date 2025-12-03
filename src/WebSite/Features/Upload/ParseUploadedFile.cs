@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
+using WebSite.Shared;
 
 namespace WebSite.Features.Upload;
 
 public readonly struct ParseUploadedFile(string line)
 {
-    public UploadCommand Parse()
+    public Result<UploadCommand> Parse()
     {
-        if (string.IsNullOrWhiteSpace(line))
-            throw new ArgumentException("Invalid CNAB file line.");
+        if (string.IsNullOrWhiteSpace(line) || line.Length < 80)
+            return Result.Failure<UploadCommand>(new Error("Invalid CNAB", "Invalid CNAB file line."));
 
         int typeCode = int.Parse(line[..1]);
         string dateString = line.Substring(1, 8);
@@ -16,13 +17,13 @@ public readonly struct ParseUploadedFile(string line)
         string card = line.Substring(30, 12).Trim();
         string timeString = line.Substring(42, 6);
         string storeOwner = line.Substring(48, 14).Trim();
-        string storeName = line.Substring(62, 18).Trim();
+        string storeName = line.Length >= 80 ? line.Substring(62, Math.Min(18, line.Length - 62)).Trim() : line[62..].Trim();
 
         var date = DateTime.ParseExact(dateString, "yyyyMMdd", CultureInfo.InvariantCulture);
         var time = DateTime.ParseExact(timeString, "HHmmss", CultureInfo.InvariantCulture);
-        var value = decimal.Parse(valueString) / 100;
+        var value = decimal.Parse(valueString) / 100m;
 
-        return new UploadCommand
+        var command = new UploadCommand
         {
             TypeCode = typeCode,
             Date = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second),
@@ -33,5 +34,6 @@ public readonly struct ParseUploadedFile(string line)
             StoreName = storeName
         };
 
+        return Result.Success<UploadCommand>(command);
     }
 }

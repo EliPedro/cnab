@@ -1,41 +1,23 @@
-version: "3.9"
-
+version: '3.8'
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: cnab_db
     environment:
-      SA_PASSWORD: "Your_strong_Password1!"
-      ACCEPT_EULA: "Y"
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_strong!Passw0rd
     ports:
       - "1433:1433"
     volumes:
       - mssql-data:/var/opt/mssql
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$SA_PASSWORD\" -Q \"SELECT 1\" || exit 1"]
-      interval: 10s
-      timeout: 10s
-      retries: 10
 
-  web:
-    build:
-      context: .
-      dockerfile: src/WebSite/Dockerfile
-    image: cnab_web
+  app:
+    build: .
     depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "5120:80"
+      - db
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Database: "Server=db,1433;Database=cnab;User Id=sa;Password=Your_strong_Password1!;TrustServerCertificate=True;"
-    restart: on-failure
-    networks:
-      - cnabnet
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=CNABImporter;User Id=sa;Password=Your_strong!Passw0rd;TrustServerCertificate=true;
+    ports:
+      - "5000:80"
 
 volumes:
   mssql-data:
-
-networks:
-  cnabnet:

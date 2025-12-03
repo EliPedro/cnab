@@ -12,7 +12,7 @@ using WebSite.Database;
 namespace WebSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251202021140_InitialCreate")]
+    [Migration("20251203034553_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,17 +39,16 @@ namespace WebSite.Migrations
 
                     b.Property<string>("Owner")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name", "Owner")
-                        .IsUnique();
+                    b.HasIndex("Name");
 
                     b.ToTable("Store", (string)null);
                 });
 
-            modelBuilder.Entity("WebSite.Entities.Transaction", b =>
+            modelBuilder.Entity("WebSite.Entities.TransactionStore", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,10 +81,10 @@ namespace WebSite.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Transaction", (string)null);
+                    b.ToTable("TransactionStore", (string)null);
                 });
 
-            modelBuilder.Entity("WebSite.Entities.Transaction", b =>
+            modelBuilder.Entity("WebSite.Entities.TransactionStore", b =>
                 {
                     b.HasOne("WebSite.Entities.Store", "Store")
                         .WithMany("Transactions")

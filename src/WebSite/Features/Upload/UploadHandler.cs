@@ -17,10 +17,10 @@ namespace WebSite.Features.Upload
                     return Result.Failure(new Error("ValidationError", string.Join("; ", result.Errors.Select(e => e.ErrorMessage))));
                 }
 
-                var store = new Store(request.StoreName, request.StoreOwner);
-                store.Transactions.Add(new Transaction
+                var store = new Entities.Store(request.StoreName, request.StoreOwner);
+                store.Transactions.Add(new TransactionStore
                 {
-                    Amount = request.Value,
+                    Amount = request.TransactionType.Positive ? request.Value : -request.Value,
                     Card = request.Card,
                     Cpf = request.Cpf,
                     Date = request.Date,

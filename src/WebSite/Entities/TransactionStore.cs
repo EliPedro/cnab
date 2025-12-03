@@ -1,5 +1,5 @@
 ﻿namespace WebSite.Entities;
-public class Transaction
+public class TransactionStore
 {
     public int Id { get; set; }
     public int StoreId { get; set; }
