@@ -11,16 +11,13 @@ using WebSite.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddHttpContextAccessor();
 
-
-// register HttpClient for Blazor Server components (so components can inject HttpClient and call relative URLs)
 builder.Services.AddScoped(sp =>
 {
     var nav = sp.GetRequiredService<NavigationManager>();
@@ -47,10 +44,7 @@ builder.Services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true)
 builder.Services.AddScoped<ICommandHandler<UploadCommand>, UploadHandler>();
 builder.Services.AddScoped<IQueryCommandWithoudParams<StoreResponse>, StoreQuery>();
 
-
 builder.Services.AddCarter();
-
-// enable API controllers for the import endpoint
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -58,14 +52,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
 }
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

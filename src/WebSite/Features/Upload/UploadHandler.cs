@@ -6,7 +6,7 @@ namespace WebSite.Features.Upload
 {
     public class UploadHandler(ApplicationDbContext applicationDbContext, UploadValidator validtor, ILogger<UploadHandler> logger) : ICommandHandler<UploadCommand>
     {
-        public async Task<Result> Handle(UploadCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UploadCommand request, CancellationToken cancellationToken = default)
         {
             try
             {

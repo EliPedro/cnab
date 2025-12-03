@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
+using WebSite.Features.Upload;
 using WebSite.Shared;
 
-namespace WebSite.Features.Upload;
+namespace WebSite.Entities;
 
 public readonly struct ParseUploadedFile(string line)
 {
     public Result<UploadCommand> Parse()
     {
-        if (string.IsNullOrWhiteSpace(line) || line.Length < 80)
+        if (string.IsNullOrWhiteSpace(line))
             return Result.Failure<UploadCommand>(new Error("Invalid CNAB", "Invalid CNAB file line."));
 
         int typeCode = int.Parse(line[..1]);
