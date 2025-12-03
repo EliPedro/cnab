@@ -1,4 +1,5 @@
-﻿using WebSite.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using WebSite.Database;
 using WebSite.Entities;
 using WebSite.Shared;
 
@@ -6,7 +7,7 @@ namespace WebSite.Features.Upload
 {
     public class UploadHandler(ApplicationDbContext applicationDbContext, UploadValidator validtor, ILogger<UploadHandler> logger) : ICommandHandler<UploadCommand>
     {
-        public async Task<Result> Handle(UploadCommand request, CancellationToken cancellationToken = default)
+        public async Task<Result> HandleAsync(UploadCommand request, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -15,6 +16,12 @@ namespace WebSite.Features.Upload
                 if (!result.IsValid)
                 {
                     return Result.Failure(new Error("ValidationError", string.Join("; ", result.Errors.Select(e => e.ErrorMessage))));
+                }
+
+                if (await TransactionStoreExistsAsync(request))
+                {
+                    logger.LogWarning("Duplicate transaction detected for Store: {StoreName}, Owner: {StoreOwner}", request.StoreName, request.StoreOwner);
+                    return Result.Failure(new Error("DuplicateTransaction", "The transaction already exists in the database."));
                 }
 
                 var store = new Entities.Store(request.StoreName, request.StoreOwner);
@@ -38,6 +45,18 @@ namespace WebSite.Features.Upload
                 logger.LogError(ex, "Error processing upload command");
                 return Result.Failure(new Error("UploadError", "An error occurred while processing the upload."));
             }
+        }
+
+        private async Task<bool> TransactionStoreExistsAsync(UploadCommand request)
+        {
+            var store = await applicationDbContext.Stores
+                 .AsNoTracking()
+                 .FirstOrDefaultAsync(s => s.Name == request.StoreName
+                 && s.Owner == request.StoreOwner && s.Transactions.Any(t => t.Cpf == request.Cpf
+                 && t.Card == request.Card && t.Date == request.Date && t.Amount == (request.TransactionType.Positive ? request.Value : -request.Value)
+                 ));
+
+            return store != null;
         }
     }
 }

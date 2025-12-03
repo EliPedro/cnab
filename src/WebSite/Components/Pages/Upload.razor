@@ -9,6 +9,9 @@
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+<script src="_framework/blazor.server.js"></script>
+<script src="/js/fileUpload.js"></script>
+
 <h3>Import CNAB File</h3>
 
 <input type="file" @ref="fileInput" accept=".txt,text/plain" />
@@ -261,5 +264,3 @@ else
     }
 }
 
-<script src="_framework/blazor.server.js"></script>
-<script src="/js/fileUpload.js"></script>

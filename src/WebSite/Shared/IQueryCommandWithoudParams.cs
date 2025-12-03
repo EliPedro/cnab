@@ -2,6 +2,6 @@
 {
     public interface IQueryCommandWithoudParams<TResultT> where TResultT : class
     {
-        Task<IQueryable<TResultT>> Handle(CancellationToken cancellationToken = default);
+        Task<IQueryable<TResultT>> HandleAsync(CancellationToken cancellationToken = default);
     }
 }

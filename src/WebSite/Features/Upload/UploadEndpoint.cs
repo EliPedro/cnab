@@ -39,7 +39,7 @@ public class UploadEndpoint : ICarterModule
                     continue;
                 }
 
-                var result = await sender.Handle(command.Value);
+                var result = await sender.HandleAsync(command.Value);
 
                 if (result.IsSuccess)
                 {

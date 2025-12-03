@@ -37,12 +37,12 @@ public class BalanceTests
         var parser = new ParseUploadedFile(line);
         var command = parser.Parse();
 
-        await handler.Handle(command.Value);
+        await handler.HandleAsync(command.Value);
 
         storeQuery = new StoreQuery(context);
 
         // Act
-        var storeResponses = await storeQuery.Handle(default);
+        var storeResponses = await storeQuery.HandleAsync(default);
 
         var storeResponse = storeResponses.FirstOrDefault();
         // Assert

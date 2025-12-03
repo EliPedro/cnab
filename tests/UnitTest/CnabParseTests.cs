@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebSite.Entities;
-using Xunit;
+﻿using WebSite.Entities;
 
 namespace UnitTest;
 
@@ -20,7 +16,7 @@ public class CnabParseTests
         // Assert
         Assert.NotNull(result);
         Assert.True(result.IsFailure);
-        Assert.Equal("Invalid CNAB file line.", result.Error.Message);
+        Assert.Equal("Invalid CNAB", result.Error.Code);
     }
 
     [Theory(DisplayName = "Successful CNAB file parse")]

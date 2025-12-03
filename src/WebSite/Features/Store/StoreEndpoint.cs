@@ -9,7 +9,7 @@ namespace WebSite.Features.Store
         {
             app.MapGet("api/cnab/stores", async (IQueryCommandWithoudParams<StoreResponse> sender) =>
             {
-                return Results.Ok(await sender.Handle());
+                return Results.Ok(await sender.HandleAsync());
             });
         }
     }

@@ -6,7 +6,7 @@ namespace WebSite.Features.Store
 {
     public class StoreQuery(ApplicationDbContext applicationDbContext) : IQueryCommandWithoudParams<StoreResponse>
     {
-        public async Task<IQueryable<StoreResponse>> Handle(CancellationToken cancellationToken)
+        public async Task<IQueryable<StoreResponse>> HandleAsync(CancellationToken cancellationToken)
         {
             var stores = applicationDbContext.Stores
                 .Select(store => new StoreResponse
