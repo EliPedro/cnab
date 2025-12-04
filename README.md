@@ -51,47 +51,6 @@ A .NET 8 Razor Pages app that parses CNAB files, persists data with Entity Frame
 \- Optional: Docker Desktop
 
 
-
-\### Build and Run
-
-
-
-\- Using Visual Studio:
-
-&nbsp;- Open the solution, set `src/Web` as startup, press \_\_Start Debugging\_\_.
-
-\- Using CLI:
-
-
-
-
-
-Navigate to `http://localhost:5000` (or the port shown in the console).
-
-
-
-
-
-Navigate to `http://localhost:5000/swagger` or the port shown in the console) to see API Documentation.
-
-
-
-
-
-\### Run Tests
-
-
-
-
-
-Key tests:
-
-\- `BalanceTests` validate store balances via EF Core InMemory.
-
-\- `CnabParserTests` validate CNAB parsing and signed amounts.
-
-
-
 \## Project Structure Vertical Slice Architecture
 
 
