@@ -1,4 +1,15 @@
 services:
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5000:80"
+
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -10,21 +21,11 @@ services:
     volumes:
       - mssql-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD-SHELL", "pidof sqlservr"]
+      test: /opt/mssql-tools18/bin/sqlcmd -U sa -P "2Secure*Password2" -C -Q "SELECT 1" -b -o /dev/null
       interval: 10s
+      retries: 5
+      start_period: 30s
       timeout: 10s
-      retries: 20
-
-  app:
-    build: .
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      ConnectionStrings__Database: "Server=db,1433;Database=cnab;User Id=SA;Password=2Secure*Password2;TrustServerCertificate=true;"
-    ports:
-      - "5000:80"
-    command: ["dotnet", "WebSite.dll"]
 
 volumes:
   mssql-data:
