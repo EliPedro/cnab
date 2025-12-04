@@ -29,8 +29,6 @@ A .NET 8 Razor Pages app that parses CNAB files, persists data with Entity Frame
 
 - Using Visual Studio:
  - Open the solution, set `src/Web` as startup, press __Start Debugging__.
-- Using CLI:
-
 
 Navigate to `http://localhost:5000` (or the port shown in the console).
 
