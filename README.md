@@ -70,6 +70,14 @@ Navigate to `http://localhost:5000` (or the port shown in the console).
 
 
 
+
+
+Navigate to `http://localhost:5000/swagger` or the port shown in the console) to see API Documentation.
+
+
+
+
+
 \### Run Tests
 
 
@@ -84,27 +92,27 @@ Key tests:
 
 
 
-\## Project Structure
+\## Project Structure Vertical Slice Architecture
 
 
 
 \- `src/Domain`
 
-&nbsp;- `CnabRecord.cs`, `CnabParser.cs`
+&nbsp;- `CnabRecord.cs`, `CnabParseTests.cs`
 
-\- `src/Infrastructure`
 
-&nbsp;- `Models.cs` with `Store`, `Transaction`, and `CnabDbContext`
+
+&nbsp;- `Entities` with `ParseUploadedFile`, `Store`, and `TransactionStore`
 
 \- `src/Web`
 
-&nbsp;- Razor Pages: `Pages/Index.cshtml`, `Pages/Stores/Details.cshtml`
+&nbsp;- Razor Pages: `Pages/Upload.cshtml`, 
 
 &nbsp;- `Program.cs` for app setup
 
 &nbsp;- `Dockerfile` for container builds
 
-\- `tests/Web.Tests`
+\- `tests/Web`
 
 &nbsp;- `BalanceTests.cs`, `CnabParserTests.cs`
 
@@ -116,7 +124,7 @@ Key tests:
 
 \- Tests use EF Core InMemory (`UseInMemoryDatabase(Guid.NewGuid().ToString())`) for fast, isolated runs.
 
-\- Production storage can be configured by updating `CnabDbContext` options in `Program.cs` (e.g., SQL Server or SQLite).
+\- Production storage can be configured by updating `ApplicationDbContext` options in `Program.cs` (e.g., SQL Server or SQLite).
 
 
 
@@ -128,37 +136,29 @@ Build and run:
 
 
 
-
-
-\## CNAB Rules Summary
-
-
-
-\- Type 2 (Boleto) → Expense → negative amount
-
-\- Type 6 (Sales) → Income → positive amount
+docker build -t cnab-Web ./src/Web docker run -p 8080:8080 cnab-web
 
 
 
-These rules are enforced by `CnabRecord.SignedAmount` and validated by tests.
+From the solution root?
 
 
 
-\## Contributing
+\- Build images:
+
+&nbsp;  - `docker compose buld`
+
+\- Run containers:
+
+&nbsp;- `docker compose up`
+
+\- Stop containers:
+
+`docker compose down`
 
 
 
-\- Keep Razor Pages patterns consistent.
-
-\- Add tests for new CNAB types and parsing scenarios.
-
-\- Ensure `dotnet test` passes before committing.
+These rules are enforced by `ParseUploadedFile` and validated by tests.
 
 
-
-\## License
-
-
-
-This project is provided as-is. Add your preferred license if needed.
 

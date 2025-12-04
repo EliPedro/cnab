@@ -1,10 +1,10 @@
-version: '3.8'
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Your_strong!Passw0rd
+      - SA_PASSWORD=2Secure*Password2
+      - MSSQL_PID=Developer
     ports:
       - "1433:1433"
     volumes:
@@ -14,8 +14,9 @@ services:
     build: .
     depends_on:
       - db
+    command: /bin/sh -c "sleep 30 && dotnet WebSite.dll"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=CNABImporter;User Id=sa;Password=Your_strong!Passw0rd;TrustServerCertificate=true;
+      - ConnectionStrings__Database=Server=localhost,1433;Database=cnab;User Id=SA;Password=2Secure*Password2;TrustServerCertificate=true;
     ports:
       - "5000:80"
 
