@@ -134,16 +134,6 @@ Key tests:
 
 Build and run:
 
-
-
-docker build -t cnab-Web ./src/Web docker run -p 8080:8080 cnab-web
-
-
-
-From the solution root?
-
-
-
 \- Build images:
 
 &nbsp;  - `docker compose buld`
