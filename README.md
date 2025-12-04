@@ -32,7 +32,7 @@ A .NET 8 Razor Pages app that parses CNAB files, persists data with Entity Frame
 
 \- Docker:
 
-&nbsp;- Containerization via `src/Web/Dockerfile`.
+&nbsp;- Containerization via `Dockerfile`.
 
 
 
