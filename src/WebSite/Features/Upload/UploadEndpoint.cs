@@ -48,6 +48,6 @@ public class UploadEndpoint : ICarterModule
             }
 
             return Results.Ok(new { Summary = summary });
-        });
+        }).DisableAntiforgery();
     }
 }
