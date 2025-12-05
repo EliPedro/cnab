@@ -53,7 +53,7 @@ Key tests:
  - Razor Pages: `Pages/Upload.cshtml`, 
  - `Program.cs` for app setup
  - `Dockerfile` for container builds
-- `tests/UnitTests`
+- `tests/UnitTest`
  - `BalanceTests.cs`, `CnabParserTests.cs`
 
 ## Data and EF Core
